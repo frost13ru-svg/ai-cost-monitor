@@ -1,5 +1,10 @@
 # AI Cost Monitor
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Release](https://img.shields.io/github/v/release/frost13ru-svg/ai-cost-monitor)](https://github.com/frost13ru-svg/ai-cost-monitor/releases)
+[![Python](https://img.shields.io/badge/python-3.10%2B-informational)](pyproject.toml)
+[![Dependencies](https://img.shields.io/badge/dependencies-0-success)](#возможности)
+
 [**EN version**](README.md) · **RU**
 
 CLI-утилита без зависимостей для бенчмарка **задержки (TTFB / время до первого токена)**

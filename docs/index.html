@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Cost Monitor — benchmark AI API latency &amp; pricing</title>
+  <meta name="description" content="Zero-dependency CLI that benchmarks latency (TTFT) and pricing across OpenAI-compatible AI providers.">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-glow: rgba(88, 166, 255, 0.35);
+      --success: #3fb950;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+    header {
+      padding: 96px 0 48px;
+      text-align: center;
+      background:
+        radial-gradient(circle at 50% -20%, rgba(88, 166, 255, 0.12), transparent 60%);
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 72px; height: 72px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #1f6feb, #58a6ff);
+      box-shadow: 0 0 40px var(--accent-glow);
+      margin-bottom: 24px;
+      font-size: 36px;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+
+    .tagline { color: var(--muted); font-size: 1.15rem; max-width: 640px; margin: 0 auto 32px; }
+
+    .badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 36px; }
+
+    .badge {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .badge b { color: var(--success); font-weight: 600; }
+
+    .cta-group { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 32px;
+      border-radius: 10px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #1f6feb, #58a6ff);
+      color: #fff;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px var(--accent-glow); }
+
+    section { padding: 40px 0; }
+
+    h2 { font-size: 1.5rem; margin-bottom: 24px; letter-spacing: -0.02em; }
+
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .feature-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .feature-card .icon { font-size: 1.6rem; margin-bottom: 12px; }
+    .feature-card h3 { font-size: 1rem; margin-bottom: 8px; }
+    .feature-card p { color: var(--muted); font-size: 0.9rem; }
+
+    pre {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+
+    .cmd { color: var(--accent); }
+    .cmt { color: var(--muted); }
+
+    .sponsor {
+      margin: 40px 0;
+      padding: 32px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(88, 166, 255, 0.08), rgba(63, 185, 80, 0.06));
+      border: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .sponsor h2 { margin-bottom: 8px; }
+    .sponsor p { color: var(--muted); margin-bottom: 20px; }
+
+    footer {
+      margin-top: auto;
+      padding: 32px 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+    }
+
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header class="container">
+    <div class="logo">&#9201;</div>
+    <h1>AI Cost Monitor</h1>
+    <p class="tagline">
+      Zero-dependency CLI that benchmarks <strong>latency (TTFT)</strong> and
+      <strong>pricing</strong> across OpenAI-compatible AI providers — before you
+      wire them into production.
+    </p>
+    <div class="badges">
+      <span class="badge">Dependencies: <b>0</b></span>
+      <span class="badge">Python: <b>3.10+</b></span>
+      <span class="badge">License: <b>MIT</b></span>
+      <span class="badge">Probe cost: <b>~fractions of a cent</b></span>
+    </div>
+    <div class="cta-group">
+      <a class="btn btn-primary" href="https://github.com/frost13ru-svg/ai-cost-monitor">View on GitHub</a>
+      <a class="btn btn-secondary" href="https://github.com/frost13ru-svg/ai-cost-monitor#quick-start">Quick start</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section>
+      <div class="features">
+        <div class="feature-card">
+          <div class="icon">&#9889;</div>
+          <h3>Latency probe</h3>
+          <p>Measures real time-to-first-token with streaming requests. Best, median and worst across N runs.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">&#128176;</div>
+          <h3>Pricing catalog</h3>
+          <p>Fetches a provider's /v1/models catalog with per-million token prices and discounts.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">&#128230;</div>
+          <h3>Zero dependencies</h3>
+          <p>Pure Python standard library. Clone and run — nothing to install.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">&#128274;</div>
+          <h3>Wallet-safe</h3>
+          <p>Probes send max_tokens=1 and warn before spending anything.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Quick start</h2>
+<pre><span class="cmt"># clone and configure</span>
+<span class="cmd">git clone</span> https://github.com/frost13ru-svg/ai-cost-monitor.git
+<span class="cmd">cd</span> ai-cost-monitor &amp;&amp; <span class="cmd">cp</span> .env.example .env
+
+<span class="cmt"># benchmark a model (near-zero cost)</span>
+<span class="cmd">./run.sh</span> probe --model gpt-6-luna --runs 3</pre>
+    </section>
+
+    <section class="sponsor">
+      <h2>&#128161; Want these prices too?</h2>
+      <p>
+        This project runs against <strong>Cheaper Inference</strong> — an OpenAI-compatible
+        marketplace with up to 80% off list prices across OpenAI, Anthropic, DeepSeek,
+        Z.ai and more. Fund from $5, no monthly commitment.
+      </p>
+      <a class="btn btn-primary" href="https://cheaperinference.com/?ref=9mQjzQYhrL">
+        Sign up with our referral link
+      </a>
+    </section>
+  </main>
+
+  <footer class="container">
+    <p>Built by <a href="https://github.com/frost13ru-svg">frost13ru-svg</a> · MIT License</p>
+  </footer>
+</body>
+</html>
