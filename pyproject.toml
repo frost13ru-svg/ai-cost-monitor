@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-cost-monitor"
+version = "1.0.0"
+description = "Zero-dependency CLI that benchmarks latency (TTFB/TTFT) and pricing across OpenAI-compatible AI API providers."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "frost13ru-svg" }]
+requires-python = ">=3.10"
+keywords = ["openai", "llm", "latency", "ttft", "benchmark", "cost", "pricing"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Quality Assurance",
+]
+
+[project.urls]
+Homepage = "https://github.com/frost13ru-svg/ai-cost-monitor"
+
+[project.scripts]
+ai-cost-monitor = "ai_cost_monitor.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
