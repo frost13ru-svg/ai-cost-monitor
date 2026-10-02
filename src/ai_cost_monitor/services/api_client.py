@@ -75,7 +75,10 @@ def stream_first_token(
             if not line.startswith("data: ") or line == constants.STREAM_SENTINEL_DONE:
                 continue
             chunk = json.loads(line[len("data: ") :])
-            delta = chunk.get("choices", [{}])[0].get("delta", {})
+            choices = chunk.get("choices") or []
+            if not choices:
+                continue
+            delta = choices[0].get("delta", {})
             if delta.get("content"):
                 total_elapsed = time.perf_counter() - response._start  # type: ignore[attr-defined]
                 break
