@@ -4,6 +4,7 @@
 [![Release](https://img.shields.io/github/v/release/frost13ru-svg/ai-cost-monitor)](https://github.com/frost13ru-svg/ai-cost-monitor/releases)
 [![Python](https://img.shields.io/badge/python-3.10%2B-informational)](pyproject.toml)
 [![Dependencies](https://img.shields.io/badge/dependencies-0-success)](#features)
+[![Donate](https://img.shields.io/badge/donate-support%20the%20project-pink?logo=heart)](https://www.donationalerts.com/r/frost_guniar)
 
 **EN** · [RU version](README.ru.md)
 
